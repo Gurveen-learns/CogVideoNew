@@ -1,15 +1,16 @@
-FROM runpod/base:0.6.3-cuda11.8.0
+FROM nvidia/cuda:12.1.1-cudnn8-runtime-ubuntu22.04
 
-# Set python3.11 as the default python
-RUN ln -sf $(which python3.11) /usr/local/bin/python && \
-    ln -sf $(which python3.11) /usr/local/bin/python3
+WORKDIR /app
 
-# Install dependencies
-COPY requirements.txt /requirements.txt
-RUN uv pip install --upgrade -r /requirements.txt --no-cache-dir --system
+RUN apt-get update && apt-get install -y \
+    python3 python3-pip git ffmpeg \
+ && rm -rf /var/lib/apt/lists/*
 
-# Add files
-ADD handler.py .
+RUN pip3 install --upgrade pip
 
-# Run the handler
-CMD python -u /handler.py
+COPY requirements.txt .
+RUN pip3 install -r requirements.txt
+
+COPY handler.py .
+
+CMD ["python3", "handler.py"]
