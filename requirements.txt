@@ -1,3 +1,13 @@
 # Required Python packages get listed here, one per line.
 
 runpod~=1.7.9
+torch
+torchvision
+diffusers
+transformers
+accelerate
+safetensors
+imageio
+imageio-ffmpeg
+numpy
+Pillow
